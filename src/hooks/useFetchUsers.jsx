@@ -11,13 +11,12 @@ function useFetchUsers() { //fetch es traer
           if(response.ok){
             const users = await response.json()
             console.log(users)
-            setLoading(true)//confirma la finalizacion de la operacion
+            setLoading(false)//confirma la finalizacion de la operacion
             return users
           }else{
-            console.error(response.statusText)//este manejo de error es respecto a la Api
+            //este manejo de error es respecto a la Api
             setError(response.statusText)
-            setLoading(false)
-            return []
+            throw new Error(`Error en la respuesta de la Api: ${response.statusText}`)
           }
             
         } catch (error) {// este manejo de error es respecto al front
@@ -25,7 +24,7 @@ function useFetchUsers() { //fetch es traer
             setError(error)
             
         } finally{
-          setLoading(true)
+          setLoading(false)
         }
     }
  return {fetchUsers,error,loading}

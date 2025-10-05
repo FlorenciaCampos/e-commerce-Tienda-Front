@@ -1,32 +1,30 @@
-import {useState} from "react";
+import { useState } from "react";
 
-function useFetchUsers() { //fetch es traer
-    const [error, setError] = useState()
-    const [loading, setLoading] = useState(false)
-    const initialUrl = "http://localhost:8080/api/user/getUsers"
+function useFetchUsers() {
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const initialUrl = "http://localhost:8080/api/user/getUsers";
 
-    const fetchUsers = async() =>{
-        try {
-          const response =  await fetch(initialUrl)
-          if(response.ok){
-            const users = await response.json()
-            console.log(users)
-            setLoading(false)//confirma la finalizacion de la operacion
-            return users
-          }else{
-            //este manejo de error es respecto a la Api
-            setError(response.statusText)
-            throw new Error(`Error en la respuesta de la Api: ${response.statusText}`)
-          }
-            
-        } catch (error) {// este manejo de error es respecto al front
-            console.error(error)
-            setError(error)
-            
-        } finally{
-          setLoading(false)
-        }
+  const fetchUsers = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(initialUrl);
+      if (response.ok) {
+        const users = await response.json();
+        return users;
+      } else {
+        setError(response.statusText);
+        throw new Error(`Error en la respuesta de la API: ${response.statusText}`);
+      }
+    } catch (error) {
+      console.error(error);
+      setError(error.message);
+    } finally {
+      setLoading(false);
     }
- return {fetchUsers,error,loading}
+  };
+
+  return { fetchUsers, error, loading };
 }
+
 export default useFetchUsers;

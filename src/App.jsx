@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import useFetchUsers from './hooks/useFetchUsers'
+import { Register } from './components/user/Register'
 
 function App() {
   const [users, setUsers] = useState([])
   const { fetchUsers, loading } = useFetchUsers()
   
+   
+
   useEffect(() => {
     const loadUser = async () => {
       const usersFetched = await fetchUsers()
@@ -14,7 +17,9 @@ function App() {
       }
     }
     loadUser()
-  }, [])  
+  }, []) // 👈 array vacío y estable
+  
+  
 
   return (
     <>
@@ -32,7 +37,9 @@ function App() {
               </div>
             </div>
           ))}
+          <Register/>
         </div>
+
       )}
     </>
   )
